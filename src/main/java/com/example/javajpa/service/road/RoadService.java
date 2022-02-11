@@ -17,5 +17,7 @@ public interface RoadService {
 
     Road findById(int id);
 
-    List<Road> search(Road road);
+    List<Road> searchByName(String roadName);
+
+    List<Road> searchByDistrictID(int districtID);
 }

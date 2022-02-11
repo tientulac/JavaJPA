@@ -46,9 +46,23 @@ public class RoadServiceImpl implements RoadService {
     }
 
     @Override
-    public List<Road> search(Road road) {
+    public List<Road> searchByName(String roadName) {
         List<Road> listSearch = new ArrayList<>();
 //        return roadRepository.searchRoad(road.getRoadName(), road.getDistrict().getDistrictID());
+        listSearch = roadRepository.searchRoadByName(roadName);
+        return  listSearch;
+    }
+
+    @Override
+    public List<Road> searchByDistrictID(int districtID) {
+        List<Road> listSearch = new ArrayList<>();
+        for (Road road : roadRepository.findAll())
+        {
+            if (road.getDistrict().getDistrictID() == districtID)
+            {
+                listSearch.add(road);
+            }
+        }
         return  listSearch;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.javajpa.controller;
 
+import com.example.javajpa.entity.District;
 import com.example.javajpa.entity.Road;
 import com.example.javajpa.service.road.RoadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class RoadController {
         return "Hello world !";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, path = "/seed/generate")
     public Road create(@RequestBody Road road) {
         roadService.save(road);
         return road;
@@ -57,10 +58,23 @@ public class RoadController {
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "search")
-    public List<Road> search(@RequestBody Road road) {
+    @RequestMapping(method = RequestMethod.POST, path = "searchByName")
+    public List<Road> searchByName(@RequestBody Road road) {
         List<Road> listSearch = new ArrayList<>();
-        listSearch = roadService.search(road);
+        listSearch = roadService.searchByName(road.getRoadName());
         return listSearch;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/searchByDistrict/{id}")
+    public HashMap<String, Object> searchByDistrict(
+            @PathVariable int id,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit) {
+        HashMap<String, Object> response = new HashMap<>();
+        List<Road> listSearch = roadService.searchByDistrictID(id);
+        response.put("page", page);
+        response.put("limit", limit);
+        response.put("data", listSearch);
+        return response;
     }
 }
